@@ -7,28 +7,31 @@ angular.module('myApp',
 
    // configure views; note the authRequired parameter for authenticated pages
    .config(['$routeProvider', function($routeProvider) {
-      $routeProvider.when('/view1', {
-         templateUrl: 'partials/view1.html',
-         controller: 'MyCtrl1'
-      });
-
-      $routeProvider.when('/view2', {
-         templateUrl: 'partials/view2.html',
-         controller: 'MyCtrl2'
-      });
 
       $routeProvider.when('/account', {
-         authRequired: true,
-         templateUrl: 'partials/account.html',
-         controller: 'AccountCtrl'
+          authRequired: true,
+          templateUrl: 'partials/account.html',
+          controller: 'AccountCtrl'
       });
 
       $routeProvider.when('/login', {
-         templateUrl: 'partials/login.html',
-         controller: 'LoginCtrl'
+          templateUrl: 'partials/login.html',
+          controller: 'LoginCtrl'
       });
-
-      $routeProvider.otherwise({redirectTo: '/view1'});
+      
+      $routeProvider.when('/lists', {
+          authRequired: true,
+          templateUrl: 'partials/lists.html',
+          controller: 'ListCtrl'
+      });
+      
+      $routeProvider.when('/listItems/:listId', {
+          authRequired: true,
+          templateUrl: 'partials/listItems.html',
+          controller: 'ListItemCtrl'
+      });
+      
+      $routeProvider.otherwise({redirectTo: '/login'});
    }])
 
    // double-check that the app has been configured

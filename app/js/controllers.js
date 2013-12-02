@@ -3,28 +3,54 @@
 /* Controllers */
 
 angular.module('myApp.controllers', [])
-   .controller('MyCtrl1', ['$scope', 'FBURL', 'angularFire', function($scope, FBURL, angularFire) {
-      angularFire(FBURL+'/syncedValue', $scope, 'syncedValue', '');
+   .controller('ListCtrl', ['$scope', 'FBURL', 'Firebase', 'angularFireCollection', function($scope, FBURL, Firebase, angularFireCollection) {
+       if (!$scope.auth) return;
+       
+       var newList = {
+           name: null,
+           shared: false
+       };
+       $scope.list = angular.copy(newList);
+       
+       var ref = new Firebase(FBURL+'/lists/' + $scope.auth.id);
+       $scope.lists = angularFireCollection(ref);
+       
+       $scope.addList = function() {
+           if ($scope.list.name) {
+               $scope.lists.add($scope.list);
+               $scope.list = angular.copy(newList);
+           }
+       };
+   }])
+   
+   .controller('ListItemCtrl', ['$scope', '$routeParams', 'FBURL', 'Firebase', 'angularFireCollection', function($scope, $routeParams, FBURL, Firebase, angularFireCollection) {
+       $scope.item = {
+           title: null,
+           when: null,
+           desc: null
+       };
+       
+       var path = "/"
+       if ($routeParams.listId) {
+           path += $routeParams.listId;
+       }
+       var ref = new Firebase(FBURL+'/listItems' + path);
+       $scope.items = angularFireCollection(ref);
+       
+       $scope.addItem= function() {
+           if ($scope.item.title) {
+               $scope.items.add($scope.item);
+               $scope.item = null;
+           }
+       }; 
    }])
 
-  .controller('MyCtrl2', ['$scope', 'FBURL', 'Firebase', 'angularFireCollection', function($scope, FBURL, Firebase, angularFireCollection) {
-      $scope.newMessage = null;
-
-      // constrain number of messages by passing a ref to angularFire
-      var ref = new Firebase(FBURL+'/messages').limit(10);
-      // add the array into $scope
-      $scope.messages = angularFireCollection(ref);
-
-      // add new messages to the list
-      $scope.addMessage = function() {
-         if( $scope.newMessage ) {
-            $scope.messages.add({text: $scope.newMessage});
-            $scope.newMessage = null;
-         }
-      };
-   }])
-
-   .controller('LoginCtrl', ['$scope', 'loginService', function($scope, loginService) {
+   .controller('LoginCtrl', ['$scope', '$location', 'loginService', function($scope, $location, loginService) {
+      
+      if ($scope.auth) {
+        $location.path("/lists");
+        return;
+      }
       $scope.email = null;
       $scope.pass = null;
       $scope.confirm = null;
@@ -32,9 +58,18 @@ angular.module('myApp.controllers', [])
 
       $scope.login = function(callback) {
          $scope.err = null;
-         loginService.login($scope.email, $scope.pass, '/account', function(err, user) {
+         loginService.login($scope.email, $scope.pass, '/lists', function(err, user) {
             $scope.err = err||null;
             typeof(callback) === 'function' && callback(err, user);
+         });
+      };
+
+      $scope.loginFacebook = function(callback) {
+         $scope.err = null;
+         loginService.loginFacebook('/lists', function(err, user) {
+            $scope.err = err||null;
+            typeof(callback) === 'function' && callback(err, user);
+            loginService.createProfile(user.id, user.displayName);
          });
       };
 

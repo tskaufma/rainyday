@@ -1,0 +1,16 @@
+<h2>View 2</h2>
+
+<form>
+  <input placeholder="Name..." ng-model="list.name">
+  <button type="submit" ng-click="addList()">Create List</button>
+</form>
+
+<ul id="messages">
+    <li ng-repeat="list in lists | reverse">[{{list.$id}}] 
+        <a href="#/listItems/{{list.$id}}">{{list.name}}</a> - {{list.shared}}</li>
+</ul>
+
+<p>
+  Running the 'interpolate' filter:
+  {{ 'Current version is v%VERSION%.' | interpolate }}
+</p>

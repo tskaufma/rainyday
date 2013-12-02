@@ -1,0 +1,17 @@
+<h2>View 2</h2>
+
+<form>
+  <input placeholder="Title..." ng-model="item.title">
+  <input placeholder="When..." ng-model="item.when">
+  <input placeholder="Description..." ng-model="item.desc">
+  <button type="submit" ng-click="addItem()">send</button>
+</form>
+
+<ul id="messages">
+    <li ng-repeat="item in items | reverse">{{item.title}} - {{item.when}} - {{item.desc}}</li>
+</ul>
+
+<p>
+  Running the 'interpolate' filter:
+  {{ 'Current version is v%VERSION%.' | interpolate }}
+</p>

@@ -29,6 +29,19 @@
                      callback && callback(null, user);
                   }, callback);
                },
+               
+               loginFacebook: function(redirect, callback) {
+                   var p = angularFireAuth.login('facebook', {
+                       rememberMe: true
+                   });
+                   
+                   p.then(function(user) {
+                       if (redirect) {
+                           $location.path(redirect);
+                       }
+                       callback && callback(null, user);
+                   }, callback);
+               },
 
                /**
                 * @param {string} [redirectPath]
