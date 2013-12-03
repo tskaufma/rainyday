@@ -1,14 +1,25 @@
 <h2>View 2</h2>
 
+<div class="row">
+    <div class="span">
 <form>
-  <input placeholder="Name..." ng-model="list.name">
-  <button type="submit" ng-click="addList()">Create List</button>
+        <legend>Create New List</legend>
+        <div class="input-append">
+            <input type="text" placeholder="Name..." ng-model="list.name">
+            <button type="submit" class="btn" ng-click="addList()">Create List</button>
+        </div>
 </form>
+    </div>
+</div>
 
+<div class="row">
+    <div class="span">
 <ul id="messages">
     <li ng-repeat="list in lists | reverse">[{{list.$id}}] 
         <a href="#/listItems/{{list.$id}}">{{list.name}}</a> - {{list.shared}}</li>
 </ul>
+    </div>
+</div>
 
 <p>
   Running the 'interpolate' filter:
