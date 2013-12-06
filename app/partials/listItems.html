@@ -2,7 +2,9 @@
 
 <form>
   <input placeholder="Title..." ng-model="item.title">
-  <input placeholder="When..." ng-model="item.when">
+  <input placeholder="When..." ng-model="item.when" ng-change="updateDate()">
+  <span>{{item.due | date:medium}}</span>
+  <span>{{item.due}}</span>
   <input placeholder="Description..." ng-model="item.desc">
   <button type="submit" ng-click="addItem()">send</button>
 </form>

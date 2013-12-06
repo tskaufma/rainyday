@@ -27,6 +27,7 @@ angular.module('myApp.controllers', [])
        $scope.item = {
            title: null,
            when: null,
+           due: null,
            desc: null
        };
        
@@ -43,6 +44,19 @@ angular.module('myApp.controllers', [])
                $scope.item = null;
            }
        }; 
+
+       $scope.updateDate = function() {
+           console.log($scope.item.when);
+           if ($scope.item.when) {
+               var due = Date.create($scope.item.when);
+               if (due.isValid()) {
+                   $scope.item.due = due;
+               } else {
+                   $scope.item.due = null;
+               }
+           }
+       };
+
    }])
 
    .controller('LoginCtrl', ['$scope', '$location', 'loginService', function($scope, $location, loginService) {
